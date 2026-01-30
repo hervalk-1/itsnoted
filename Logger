@@ -1,0 +1,50 @@
+// logger.js
+(function () {
+    const LOG_KEY = 'itsNotedLogs';
+
+    function getLogs() {
+        try {
+            return JSON.parse(localStorage.getItem(LOG_KEY)) || [];
+        } catch {
+            return [];
+        }
+    }
+
+    function saveLog(entry) {
+        const logs = getLogs();
+        logs.push({
+            ...entry,
+            timestamp: new Date().toISOString(),
+        });
+
+        // Keep last 100 logs only
+        localStorage.setItem(LOG_KEY, JSON.stringify(logs.slice(-100)));
+    }
+
+    // Global JS errors
+    window.addEventListener('error', (event) => {
+        saveLog({
+            type: 'error',
+            message: event.message,
+            source: event.filename,
+            line: event.lineno,
+            column: event.colno
+        });
+    });
+
+    // Promise rejections
+    window.addEventListener('unhandledrejection', (event) => {
+        saveLog({
+            type: 'promise',
+            message: event.reason?.message || String(event.reason)
+        });
+    });
+
+    // Optional manual logger
+    window.ItNotedLog = function (type, message, meta = {}) {
+        saveLog({ type, message, meta });
+    };
+
+    // Expose logs for debugging
+    window.getItNotedLogs = getLogs;
+})();
