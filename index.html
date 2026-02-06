@@ -29,7 +29,9 @@
 
     body {
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        background: #f7f4f0; /* Fallback */
         background: var(--bg);
+        color: #4a4a4a; /* Fallback */
         color: var(--text);
         line-height: 1.6;
         padding: 0;
@@ -73,6 +75,7 @@
     }
 
     .button {
+        background: #9b8b7e; /* Fallback */
         background: var(--primary);
         color: white;
         border: none;
@@ -87,6 +90,7 @@
     }
 
     .button:hover {
+        background: #8a7a6d; /* Fallback */
         background: var(--primary-hover);
         transform: translateY(-1px);
     }
@@ -96,8 +100,11 @@
     }
 
     .button.secondary {
+        background: #f7f4f0; /* Fallback */
         background: var(--bg);
+        color: #4a4a4a; /* Fallback */
         color: var(--text);
+        border: 2px solid #e8e4df; /* Add border so it's visible */
     }
 
     .button.secondary:hover {
@@ -614,18 +621,18 @@
 <body>
     <div class="container">
         <!-- Home Screen -->
-        <div id="homeScreen" style="display: block;">
+        <div id="homeScreen" style="display: block !important; opacity: 1 !important; visibility: visible !important;">
             <header>
                 <h1>It's Noted 🧠</h1>
                 <p class="tagline">You don't have to explain. Nothing here is good or bad.</p>
             </header>
 
 ```
-        <div class="card">
-            <button class="button" id="quickLogBtn">Quick Log</button>
-            <button class="button" id="manualLogBtn">Manual Log</button>
-            <button class="button" id="myDataBtn">My Data</button>
-            <button class="button secondary" id="settingsBtn">Settings</button>
+        <div class="card" style="display: block !important; opacity: 1 !important; visibility: visible !important;">
+            <button class="button" id="quickLogBtn" style="display: block !important; opacity: 1 !important;">Quick Log</button>
+            <button class="button" id="manualLogBtn" style="display: block !important; opacity: 1 !important;">Manual Log</button>
+            <button class="button" id="myDataBtn" style="display: block !important; opacity: 1 !important;">My Data</button>
+            <button class="button secondary" id="settingsBtn" style="display: block !important; opacity: 1 !important;">Settings</button>
         </div>
     </div>
 
@@ -2759,15 +2766,63 @@
         console.log('App initializing...');
         
         // Initialize data structure if needed
-        const data = getData();
-        if (!data.events) {
-            saveData({
-                events: [],
-                people: { work: [], friends: [], relationship: [] },
+        let data = getData();
+        
+        // FORCE LOAD TEST DATA - Remove this condition after testing
+        if (!data.events || data.events.length === 0) {
+            console.log('Loading test data...');
+            // Create test data for demonstration
+            const testData = {
+                events: [
+                    // Sleep logs - showing repetition and time patterns
+                    { id: '1', timestamp: '2026-01-28T23:30:00Z', date: '2026-01-28', timeOfDay: 'night', category: 'sleep', preset: "Can't sleep – racing thoughts", isPositive: false, isEpisode: false },
+                    { id: '2', timestamp: '2026-01-29T23:45:00Z', date: '2026-01-29', timeOfDay: 'night', category: 'sleep', preset: "Can't sleep – bad thoughts", isPositive: false, isEpisode: false },
+                    { id: '3', timestamp: '2026-01-30T08:30:00Z', date: '2026-01-30', timeOfDay: 'morning', category: 'sleep', preset: 'Slept but not rested', isPositive: false, isEpisode: false },
+                    { id: '4', timestamp: '2026-01-31T23:15:00Z', date: '2026-01-31', timeOfDay: 'night', category: 'sleep', preset: "Can't sleep – racing thoughts", isPositive: false, isEpisode: false },
+                    
+                    // Work logs - showing sequences and co-occurrence
+                    { id: '5', timestamp: '2026-01-28T14:00:00Z', date: '2026-01-28', timeOfDay: 'afternoon', category: 'work', preset: 'Work overwhelm', isPositive: false, isEpisode: false },
+                    { id: '6', timestamp: '2026-01-29T15:30:00Z', date: '2026-01-29', timeOfDay: 'afternoon', category: 'work', preset: 'Drained after work', isPositive: false, isEpisode: false },
+                    { id: '7', timestamp: '2026-01-30T14:45:00Z', date: '2026-01-30', timeOfDay: 'afternoon', category: 'work', preset: 'Work overwhelm', isPositive: false, isEpisode: false },
+                    
+                    // Internal logs - showing sequences (often follows work)
+                    { id: '8', timestamp: '2026-01-28T18:00:00Z', date: '2026-01-28', timeOfDay: 'evening', category: 'internal', preset: 'Burnt out', isPositive: false, isEpisode: false },
+                    { id: '9', timestamp: '2026-01-29T19:30:00Z', date: '2026-01-29', timeOfDay: 'evening', category: 'internal', preset: 'Anxious spiral', isPositive: false, isEpisode: false },
+                    { id: '10', timestamp: '2026-01-30T18:15:00Z', date: '2026-01-30', timeOfDay: 'evening', category: 'internal', preset: 'Heavy / low', isPositive: false, isEpisode: false },
+                    { id: '11', timestamp: '2026-01-31T19:00:00Z', date: '2026-01-31', timeOfDay: 'evening', category: 'internal', preset: 'Burnt out', isPositive: false, isEpisode: false },
+                    
+                    // Social logs
+                    { id: '12', timestamp: '2026-01-27T20:00:00Z', date: '2026-01-27', timeOfDay: 'evening', category: 'social', preset: 'Socially drained', isPositive: false, isEpisode: false },
+                    { id: '13', timestamp: '2026-02-01T19:30:00Z', date: '2026-02-01', timeOfDay: 'evening', category: 'social', preset: 'Good social time', isPositive: true, isEpisode: false },
+                    
+                    // Positive logs
+                    { id: '14', timestamp: '2026-02-02T10:00:00Z', date: '2026-02-02', timeOfDay: 'morning', category: 'positive', preset: 'Calm & okay', isPositive: true, isEpisode: false },
+                    { id: '15', timestamp: '2026-02-03T09:30:00Z', date: '2026-02-03', timeOfDay: 'morning', category: 'positive', preset: 'Good energy', isPositive: true, isEpisode: false },
+                    
+                    // Episode patterns - sleep and work appearing before
+                    { id: '16', timestamp: '2026-02-01T10:00:00Z', date: '2026-02-01', timeOfDay: 'morning', category: 'sleep', preset: 'Bad sleep streak', isPositive: false, isEpisode: false },
+                    { id: '17', timestamp: '2026-02-01T15:00:00Z', date: '2026-02-01', timeOfDay: 'afternoon', category: 'work', preset: 'Work spiral', isPositive: false, isEpisode: false },
+                    { id: '18', timestamp: '2026-02-03T11:00:00Z', date: '2026-02-03', timeOfDay: 'morning', category: 'episode', status: 'starting', isPositive: false, isEpisode: true },
+                    
+                    // More recent logs showing similar day patterns
+                    { id: '19', timestamp: '2026-02-04T14:00:00Z', date: '2026-02-04', timeOfDay: 'afternoon', category: 'work', preset: 'Work overwhelm', isPositive: false, isEpisode: false },
+                    { id: '20', timestamp: '2026-02-04T18:30:00Z', date: '2026-02-04', timeOfDay: 'evening', category: 'internal', preset: 'Burnt out', isPositive: false, isEpisode: false },
+                    { id: '21', timestamp: '2026-02-04T23:00:00Z', date: '2026-02-04', timeOfDay: 'night', category: 'sleep', preset: "Can't sleep – racing thoughts", isPositive: false, isEpisode: false },
+                ],
+                people: {
+                    work: ['Sarah', 'Mike'],
+                    friends: ['Alex', 'Jordan'],
+                    relationship: []
+                },
                 customPresets: {},
                 customCategories: {},
                 activeEpisode: null
-            });
+            };
+            saveData(testData);
+            data = testData;
+            console.log('Test data loaded! Total events:', testData.events.length);
+        } else {
+            console.log('Existing data found. Events:', data.events.length);
         }
 
         // Set up main navigation
