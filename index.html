@@ -29,14 +29,17 @@
 
     body {
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-        background: #f7f4f0; /* Fallback */
+        background: #f7f4f0 !important; /* Fallback */
         background: var(--bg);
-        color: #4a4a4a; /* Fallback */
-        color: var(--text);
+        color: #333333 !important; /* Dark text - forced */
         line-height: 1.6;
         padding: 0;
         min-height: 100vh;
         overflow-x: hidden; /* MOBILE SAFETY: Prevent horizontal scroll */
+    }
+
+    h1, h2, h3, h4, h5, h6, p, span, div, button {
+        color: inherit !important;
     }
 
     .container {
@@ -54,12 +57,12 @@
     h1 {
         font-size: 28px;
         font-weight: 600;
-        color: var(--primary);
+        color: #333333 !important;
         margin-bottom: 8px;
     }
 
     .tagline {
-        color: var(--text-light);
+        color: #666666 !important;
         font-size: 15px;
         font-style: italic;
     }
@@ -75,14 +78,13 @@
     }
 
     .button {
-        background: #9b8b7e; /* Fallback */
-        background: var(--primary);
-        color: white;
-        border: none;
+        background: #9b8b7e !important; /* Fallback - tan/brown */
+        color: white !important;
+        border: 2px solid #7a6b5e !important;
         border-radius: 12px;
         padding: 16px 24px;
-        font-size: 16px;
-        font-weight: 500;
+        font-size: 16px !important;
+        font-weight: 600 !important;
         width: 100%;
         cursor: pointer;
         transition: all 0.2s;
@@ -90,8 +92,7 @@
     }
 
     .button:hover {
-        background: #8a7a6d; /* Fallback */
-        background: var(--primary-hover);
+        background: #8a7a6d !important; /* Fallback */
         transform: translateY(-1px);
     }
 
@@ -100,11 +101,9 @@
     }
 
     .button.secondary {
-        background: #f7f4f0; /* Fallback */
-        background: var(--bg);
-        color: #4a4a4a; /* Fallback */
-        color: var(--text);
-        border: 2px solid #e8e4df; /* Add border so it's visible */
+        background: #e8e4df !important; /* Lighter tan with border */
+        color: #333333 !important; /* Dark text */
+        border: 2px solid #9b8b7e !important;
     }
 
     .button.secondary:hover {
